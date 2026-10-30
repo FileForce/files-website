@@ -1,9 +1,10 @@
 "use client";
 
 import { motion } from "motion/react";
-import { Apple, Download as DownloadIcon } from "lucide-react";
 import Image from "next/image";
-import { GithubMark, LATEST_RELEASE, REPOSITORY } from "./primitives";
+import Link from "next/link";
+import { PLATFORMS, PlatformIcon } from "./platform";
+import { GithubMark, REPOSITORY } from "./primitives";
 
 export function Download() {
   return (
@@ -19,23 +20,23 @@ export function Download() {
           <Image src="/logo.svg" alt="Files" width={96} height={96} />
         </motion.div>
         <h2 className="mt-6 text-3xl font-semibold tracking-tight sm:text-5xl">Get Files</h2>
-        <p className="mx-auto mt-4 max-w-xl text-muted">Free for macOS 13+ on Apple silicon, and Linux.</p>
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a href={LATEST_RELEASE} className="flex items-center gap-2 rounded-xl bg-accent px-6 py-3.5 font-medium text-white transition hover:brightness-110">
-            <Apple className="size-4" /> Download for macOS
-          </a>
-          <a href={LATEST_RELEASE} className="flex items-center gap-2 rounded-xl border border-border bg-surface px-6 py-3.5 font-medium transition hover:bg-elevated">
-            <DownloadIcon className="size-4" /> Linux AppImage
-          </a>
+        <p className="mx-auto mt-4 max-w-xl text-muted">Free on all three systems.</p>
+        <div className="mx-auto mt-8 grid max-w-3xl gap-3 sm:grid-cols-3">
+          {PLATFORMS.map((item, index) => (
+            <motion.div key={item.id} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }}>
+              <Link
+                href={`/downloads#${item.id}`}
+                className="group flex flex-col items-center gap-2 rounded-2xl border border-border bg-surface p-5 transition hover:-translate-y-1 hover:border-accent"
+              >
+                <PlatformIcon platform={item.id} className="size-7 text-muted transition group-hover:text-accent" />
+                <span className="font-medium">{item.name}</span>
+                <span className="text-xs text-faint">{item.requirement}</span>
+                <span className="mt-1 text-xs text-accent">{item.file}</span>
+              </Link>
+            </motion.div>
+          ))}
         </div>
-        <details className="mx-auto mt-8 max-w-xl text-left text-sm text-muted">
-          <summary className="cursor-pointer text-center text-faint hover:text-muted">macOS says it cannot verify the app?</summary>
-          <p className="mt-3">
-            Files is not notarized by Apple yet. Open it once, then go to <b className="text-foreground">System Settings → Privacy &amp; Security</b> and click{" "}
-            <b className="text-foreground">Open Anyway</b>. Or in Terminal:
-          </p>
-          <pre className="mt-2 overflow-x-auto rounded-xl bg-background p-3 font-mono text-xs">xattr -dr com.apple.quarantine /Applications/Files.app</pre>
-        </details>
+        <Link href="/downloads" className="mt-6 inline-block text-sm text-muted hover:text-foreground">All versions and release notes →</Link>
       </motion.div>
     </section>
   );

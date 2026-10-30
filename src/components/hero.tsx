@@ -1,10 +1,11 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { Apple, Download, FileArchive, FileCode2, FileImage, FileText, Folder, Search, Terminal } from "lucide-react";
-import Image from "next/image";
+import { Download, FileArchive, FileCode2, FileImage, FileText, Folder, Search, Terminal } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import { GithubMark, LATEST_RELEASE, REPOSITORY } from "./primitives";
+import { Nav } from "./nav";
+import { PlatformIcon, platformName, usePlatform } from "./platform";
 
 type Row = { name: string; kind: "folder" | "image" | "code" | "text" | "archive"; size: string; modified: string; tags?: string[] };
 
@@ -135,26 +136,24 @@ function AppWindow() {
   );
 }
 
+/** "Download for <your system>", picked from the browser. */
+function DownloadButton() {
+  const platform = usePlatform();
+  return (
+    <Link
+      href={`/downloads#${platform}`}
+      className="flex items-center gap-2 rounded-xl bg-accent px-6 py-3.5 font-medium text-white shadow-[0_10px_40px_-10px_rgba(124,116,255,0.9)] transition hover:brightness-110"
+    >
+      <PlatformIcon platform={platform} /> Download for {platformName(platform)}
+    </Link>
+  );
+}
+
 export function Hero() {
   return (
     <header className="relative overflow-hidden">
       <div className="glow pointer-events-none absolute inset-x-0 top-0 h-[700px]" />
-      <nav className="relative mx-auto flex max-w-6xl items-center justify-between px-4 py-5 sm:px-6">
-        <a href="#" className="flex items-center gap-2.5 font-semibold">
-          <Image src="/logo.svg" alt="" width={32} height={32} priority />
-          Files
-        </a>
-        <div className="flex items-center gap-1 text-sm text-muted sm:gap-6">
-          <a href="#ease" className="hidden hover:text-foreground sm:inline">Fast</a>
-          <a href="#access" className="hidden hover:text-foreground sm:inline">Accessible</a>
-          <a href="#comfort" className="hidden hover:text-foreground sm:inline">Convenient</a>
-          <a href="#extensions" className="hidden hover:text-foreground sm:inline">Extensions</a>
-          <a href="#marketplace" className="hidden hover:text-foreground sm:inline">Marketplace</a>
-          <a href={REPOSITORY} className="flex items-center gap-1.5 rounded-lg px-2 py-1.5 hover:text-foreground" aria-label="GitHub">
-            <GithubMark />
-          </a>
-        </div>
-      </nav>
+      <Nav />
       <div className="relative mx-auto max-w-6xl px-4 pt-14 pb-24 text-center sm:px-6 sm:pt-20">
         <motion.p
           initial={{ opacity: 0, y: 12 }}
@@ -162,7 +161,7 @@ export function Hero() {
           transition={{ duration: 0.5 }}
           className="mx-auto inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-3 py-1 text-xs text-muted"
         >
-          <span className="size-1.5 rounded-full bg-green" /> Free for macOS and Linux · open source
+          <span className="size-1.5 rounded-full bg-green" /> Free for macOS, Windows and Linux · source available
         </motion.p>
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
@@ -186,15 +185,10 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.3 }}
           className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row"
         >
-          <a
-            href={LATEST_RELEASE}
-            className="flex items-center gap-2 rounded-xl bg-accent px-6 py-3.5 font-medium text-white shadow-[0_10px_40px_-10px_rgba(124,116,255,0.9)] transition hover:brightness-110"
-          >
-            <Apple className="size-4" /> Download for macOS
-          </a>
-          <a href={LATEST_RELEASE} className="flex items-center gap-2 rounded-xl border border-border bg-surface px-6 py-3.5 font-medium transition hover:bg-elevated">
-            <Download className="size-4" /> Linux AppImage
-          </a>
+          <DownloadButton />
+          <Link href="/downloads" className="flex items-center gap-2 rounded-xl border border-border bg-surface px-6 py-3.5 font-medium transition hover:bg-elevated">
+            <Download className="size-4" /> All platforms
+          </Link>
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 60, scale: 0.96 }}
