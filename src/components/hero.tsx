@@ -149,6 +149,7 @@ export function Hero() {
           <a href="#access" className="hidden hover:text-foreground sm:inline">Accessible</a>
           <a href="#comfort" className="hidden hover:text-foreground sm:inline">Convenient</a>
           <a href="#extensions" className="hidden hover:text-foreground sm:inline">Extensions</a>
+          <a href="#marketplace" className="hidden hover:text-foreground sm:inline">Marketplace</a>
           <a href={REPOSITORY} className="flex items-center gap-1.5 rounded-lg px-2 py-1.5 hover:text-foreground" aria-label="GitHub">
             <GithubMark />
           </a>

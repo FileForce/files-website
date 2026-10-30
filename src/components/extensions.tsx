@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { FileArchive, FileText, GitBranch, KeyRound, LockKeyhole, ShieldCheck, SquareTerminal } from "lucide-react";
+import { ArrowRight, Code2, Coins, FileArchive, FileText, GitBranch, KeyRound, LockKeyhole, Send, ShieldCheck, SquareTerminal } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Card, Grid, Section } from "./primitives";
 
@@ -235,9 +235,62 @@ export function Developers() {
           </code>
         </pre>
       </motion.div>
+      <Marketplace />
       <p className="mt-4 flex items-center justify-center gap-2 text-sm text-faint">
         <GitBranch className="size-4" /> Source on GitHub under FSL-1.1 · becomes MIT after two years
       </p>
     </section>
+  );
+}
+
+const APPLY = "https://github.com/FileForce/files/issues/new?template=marketplace.yml";
+
+/** Sell an extension with Files: the steps light up one after another. */
+function Marketplace() {
+  const step = useStep(4, 1400);
+  const steps = [
+    { icon: <Code2 className="size-5" />, title: "Build", text: "Write it with files-sdk, test it with the developer console." },
+    { icon: <Send className="size-5" />, title: "Apply", text: "Send it for review: what it does and which permissions it needs." },
+    { icon: <ShieldCheck className="size-5" />, title: "We sign it", text: "Reviewed, signed and listed — users know it is genuine." },
+    { icon: <Coins className="size-5" />, title: "Earn together", text: "Users buy a license key; you get a share of every sale." },
+  ];
+  return (
+    <motion.div
+      id="marketplace"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="mt-5 rounded-3xl border border-border bg-surface p-8"
+    >
+      <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
+        <div className="max-w-xl">
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-amber">Marketplace</p>
+          <h3 className="mt-3 text-2xl font-semibold">Sell your extension with us</h3>
+          <p className="mt-3 text-muted">
+            Built something people need — Kubernetes, Docker, S3, a database browser? Publish it in the Files marketplace and earn from it. We handle signing, licenses and payments.
+          </p>
+        </div>
+        <a href={APPLY} className="flex shrink-0 items-center gap-2 rounded-xl bg-amber px-5 py-3 font-medium text-background transition hover:brightness-110">
+          Apply to publish <ArrowRight className="size-4" />
+        </a>
+      </div>
+      <div className="mt-8 grid gap-3 md:grid-cols-4">
+        {steps.map((item, index) => (
+          <motion.div
+            key={item.title}
+            animate={{ borderColor: index === step ? "var(--amber)" : "var(--border)", y: index === step ? -4 : 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 24 }}
+            className="rounded-2xl border bg-elevated p-4"
+          >
+            <div className={`flex size-9 items-center justify-center rounded-xl ${index <= step ? "bg-amber/20 text-amber" : "bg-border text-faint"}`}>{item.icon}</div>
+            <p className="mt-3 font-medium">
+              <span className="mr-2 text-faint">{index + 1}</span>
+              {item.title}
+            </p>
+            <p className="mt-1 text-sm text-muted">{item.text}</p>
+          </motion.div>
+        ))}
+      </div>
+    </motion.div>
   );
 }
