@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { ChevronDown, Download, ExternalLink, Loader2 } from "lucide-react";
+import { track } from "@vercel/analytics";
 import { useEffect, useState } from "react";
 import { PLATFORMS, type Platform, PlatformIcon, platformName, useHashPlatform, usePlatform } from "./platform";
 import { GithubMark, REPOSITORY } from "./primitives";
@@ -15,6 +16,11 @@ const API = "https://api.github.com/repos/FileForce/files/releases?per_page=30";
 function assetFor(release: Release, platform: Platform): Asset | undefined {
   const ending = PLATFORMS.find((item) => item.id === platform)!.file.toLowerCase();
   return release.assets.find((asset) => asset.name.toLowerCase().endsWith(ending));
+}
+
+/** Counts a download in Vercel Analytics: which system, version and file, and from where. */
+function trackDownload(platform: Platform, version: string, file: string, from: "latest" | "all-versions") {
+  track("Download", { os: platform, version, file, from });
 }
 
 function megabytes(bytes: number) {
@@ -136,6 +142,7 @@ export function DownloadsList() {
               {latest && asset && (
                 <a
                   href={asset.browser_download_url}
+                  onClick={() => trackDownload(chosen, latest.tag_name, asset.name, "latest")}
                   className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3.5 font-medium text-white shadow-[0_10px_40px_-10px_rgba(124,116,255,0.9)] transition hover:brightness-110"
                 >
                   <Download className="size-4" /> Download {latest.tag_name} · {megabytes(asset.size)}
@@ -187,7 +194,10 @@ export function DownloadsList() {
                           <a
                             key={item.id}
                             href={file.browser_download_url}
-                            onClick={(event) => event.stopPropagation()}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              trackDownload(item.id, release.tag_name, file.name, "all-versions");
+                            }}
                             title={`${item.name} · ${megabytes(file.size)}`}
                             className="flex size-8 items-center justify-center rounded-lg border border-border text-muted hover:border-accent hover:text-accent"
                           >
