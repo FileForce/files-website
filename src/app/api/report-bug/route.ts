@@ -2,7 +2,7 @@
  * Bug reports from the app (Help → Report a Bug…) become GitHub issues,
  * filed with the site's token so reporters need no GitHub account.
  *
- * Needs GITHUB_ISSUES_TOKEN in the Vercel project: a fine-grained token
+ * Needs FILEFORCE_ISSUES_TOKEN in the Vercel project: a fine-grained token
  * with "Issues: read and write" on FileForce/files only.
  */
 
@@ -27,7 +27,7 @@ function answer(status: number, body: Record<string, string>) {
 }
 
 export async function POST(request: Request) {
-  const token = process.env.GITHUB_ISSUES_TOKEN;
+  const token = process.env.FILEFORCE_ISSUES_TOKEN;
   if (!token) return answer(503, { error: "Reports are not set up on the website yet" });
 
   const address = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
