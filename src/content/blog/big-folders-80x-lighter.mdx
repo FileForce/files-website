@@ -1,0 +1,33 @@
+---
+title: How big folders got 80 times lighter
+date: 2026-11-08
+tag: feature
+summary: We counted every allocation Files makes while drawing a 5,000-file folder — and found it rebuilt every file on every frame.
+cover: /blog/list.png
+coverAlt: A folder listed in Files
+---
+
+Files is fast to start, but a folder with thousands of files still felt heavier than it should. So we measured instead of guessing.
+
+## Counting allocations
+
+Debug builds of Files now run on a counting allocator: every allocation, reallocation and byte goes through a counter. A test opens a folder of 5,000 files and reports what each everyday action costs.
+
+| Action, 5,000 files | Before | After |
+| --- | --- | --- |
+| Redraw with nothing changed | 595,000 allocations · 390 MB | **7,100 · 4 MB** |
+| Select the next file | 714,000 | **9,500** |
+| Scroll | 595,000 | **8,600** |
+| Open the folder again | 594,000 | **7,500** |
+
+## What we found
+
+**Every file, every frame.** Both the Pro list and the Expressive grid built an element for all 5,000 files on every redraw — including the ones far off screen. Now they build only the rows you can see, plus a few around them so fast scrolling never shows a gap. The list keeps its full height, so the scrollbar behaves exactly as before, and keyboard selection still scrolls to the file you move to.
+
+**Sorting made copies.** Sorting by name lowercased both names on every comparison — about 120,000 small strings for one sort of a big folder. Names are now compared in place.
+
+**The same list, four times.** The rows, the counts and the status bar each asked for the folder's sorted list, so it was rebuilt several times per frame. It is now built once and kept until the folder, the search or the sort changes.
+
+<Callout>
+A nice side effect: our own test suite, which draws plenty of windows, now runs in under 30 seconds instead of 90.
+</Callout>

@@ -1,0 +1,14 @@
+---
+title: Files 0.1.17
+date: 2026-11-08
+tag: release
+version: 0.1.17
+summary: Big folders got about 80 times lighter to draw, and Report a Bug sends straight from the app to GitHub.
+cover: /blog/list.png
+coverAlt: A folder listed in Files
+---
+
+- **Big folders are much lighter:** the Pro list and the Expressive grid build only the rows on screen (and a few around), not every file. A redraw of a 5,000-file folder went from ~595,000 allocations and ~390 MB allocated to ~7,000 and ~4 MB; scrolling and selecting got as light.
+- Sorting compares names without making lowercase copies, and the file list is built once per change instead of several times a frame.
+- **Help → Report a Bug…** (also the bug button beside the Settings gear, and About): describe the problem and it becomes an issue on GitHub — no GitHub account needed. Version and system are added; the last Console events only when you tick the box. If the website cannot take it, the issue opens filled in, in the browser.
+- Release builds: the AppImage tools are downloaded with retries before the build, so a flaky download no longer fails the Linux release.
