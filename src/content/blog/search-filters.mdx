@@ -1,0 +1,26 @@
+---
+title: "Search like a pro: kind:, size: and modified:"
+date: 2026-11-06
+tag: tip
+summary: Type filters into the search box to find big videos from last week or every PDF over 10 MB in a second.
+cover: /blog/search.png
+coverAlt: The search box with filters
+---
+
+The search box understands filters. Combine them with any words:
+
+```text
+kind:image size:>10mb modified:<7d
+```
+
+That finds pictures bigger than 10 MB changed in the last week.
+
+| Filter | Example | Finds |
+| --- | --- | --- |
+| `kind:` | `kind:video` | image, video, audio, document, code, archive, folder |
+| `size:` | `size:>1gb`, `size:<100kb` | bigger or smaller than |
+| `modified:` | `modified:<7d`, `modified:>1y` | changed within, or longer ago than |
+
+<Callout title="Tip">
+Press <Kbd>⌘</Kbd> <Kbd>F</Kbd> (<Kbd>Ctrl</Kbd> <Kbd>F</Kbd> on Windows and Linux) to jump to the box, and <Kbd>⌘</Kbd> <Kbd>K</Kbd> to search everywhere, not only in this folder. Extensions add their own filters, like `git:` — see them all in Settings → Extensions.
+</Callout>

@@ -7,6 +7,7 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin", "cyr
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://fileforce.vercel.app"),
   title: "Files — the file explorer that keeps up with you",
   description:
     "A fast, accessible file explorer for macOS and Linux with Git, SSH, AI agents and extensions. Built with Rust and GPUI.",

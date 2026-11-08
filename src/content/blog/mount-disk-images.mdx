@@ -1,0 +1,20 @@
+---
+title: Mount disk images from the context menu
+date: 2026-11-07
+tag: feature
+summary: ISO, DMG, IMG and VHD images mount with one click on macOS, Windows and Linux, open in a new tab and eject from CONNECTED.
+cover: /blog/list.png
+coverAlt: A folder listed in Files
+---
+
+Right-click an image and choose **Mount**. Files asks the system to mount it read-only, opens it in a new tab and lists it under **CONNECTED** in the sidebar. **Eject** there unmounts it.
+
+| System | Images | How |
+| --- | --- | --- |
+| macOS | ISO, IMG, DMG, sparse images | `hdiutil`, in `/Volumes` |
+| Windows | ISO, IMG, VHD, VHDX | `Mount-DiskImage`, a drive letter |
+| Linux | ISO, IMG | `udisksctl`, no administrator rights |
+
+## Mount or browse?
+
+Double-clicking an `.iso` still opens it like an archive: Files reads ISO 9660 with Joliet names itself, so you can look inside and extract without mounting anything. Mount when the image uses UDF only — Windows installation media, for example — or when you want to work with it like a drive.

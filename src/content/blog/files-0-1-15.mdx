@@ -1,0 +1,17 @@
+---
+title: Files 0.1.15
+date: 2026-11-07
+tag: release
+version: 0.1.15
+summary: Every detail of photos, video and archives in the preview, ISO images, mounting disk images, and Windows drives in CONNECTED.
+cover: /blog/preview.png
+coverAlt: The preview panel of Files
+---
+
+- macOS: a click on the Dock icon brings Files back when its window was closed (a new window opens) or minimized; folders sent from the system or a second start open a window again too.
+- Preview shows everything a file says about itself. **Photos:** size, megapixels and shape, format, color space, orientation; camera, lens, software, date taken, author; aperture, shutter, ISO, focal length, exposure, flash, white balance; GPS location. **Video and audio** (through the bundled VLC): duration, overall bitrate, resolution; per stream codec, frame rate, channels, sample rate, bitrate, language; tags (title, artist, album, director, season…).
+- **Archives:** the preview tells the format and how it is compressed: method and level (Deflate, gzip level, RAR Fastest…Best, Store), size before and after with the saving, file and folder counts, encryption, solid RAR, recovery record, comment.
+- **ISO disc images** (`.iso`) open and extract like other archives (ISO 9660 with Joliet long names); the preview shows the label, disc size, bootable, created, publisher and the program that made it.
+- **Disk images mount** from the context menu (Mount): ISO and IMG everywhere, DMG on macOS (`hdiutil`), VHD/VHDX on Windows (`Mount-DiskImage`, a drive letter), Linux through `udisksctl` without administrator rights. The image opens in a new tab and shows in CONNECTED, where Eject unmounts it (on Linux the loop device is freed too).
+- Windows: CONNECTED lists the other drives (USB sticks, DVDs, mounted images, network drives).
+- SDK: `ArchiveProvider::info` lets archive extensions describe an archive for the preview (`ArchiveInfo`).

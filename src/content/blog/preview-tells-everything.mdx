@@ -1,0 +1,33 @@
+---
+title: The preview tells you everything a file knows
+date: 2026-11-07
+tag: feature
+summary: Camera and lens of a photo, codecs of a video, how an archive is compressed — select a file and it is all in the preview.
+cover: /blog/preview.png
+coverAlt: The preview panel of Files
+---
+
+Select a file and look to the right. Next to the name, size and dates, Files now reads what the file says about itself — without opening it in another app.
+
+## Photos
+
+Everything a camera writes into the picture (EXIF), grouped the way a photographer reads it:
+
+| Group | What you see |
+| --- | --- |
+| Image | Dimensions, megapixels, shape (16:9, 3:2), format, color space, orientation |
+| Camera | Make, model, lens, software, date taken, author, copyright |
+| Exposure | Aperture, shutter, ISO, focal length and its 35 mm equivalent, exposure bias, metering, flash, white balance |
+| Location | GPS coordinates, altitude, direction |
+
+## Video and audio
+
+Files reads streams through the VLC it ships with, so it works the same on macOS, Windows and Linux: duration and overall bitrate, then each stream on its own — codec, resolution and frame rate for video; channels (stereo, 5.1), sample rate and bitrate for audio; subtitle languages. Tags follow: title, artist, album, director, season and episode.
+
+## Archives
+
+For ZIP, TAR, gzip, RAR and ISO the preview says *how* the archive is made: the compression method and level, the size before and after with the saving, how many files and folders, whether it is encrypted, and for RAR whether it is solid or has a recovery record.
+
+<Callout>
+Details are read once per file version, in the background, so scrolling through a folder of thousands of photos stays smooth.
+</Callout>

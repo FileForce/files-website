@@ -1,0 +1,25 @@
+---
+title: Settings → Storage, and a limit for every cache
+date: 2026-11-04
+tag: feature
+summary: A ring chart of what Files keeps on disk, a Clear button for each kind, and a limit that keeps it all under 1 GB.
+cover: /blog/views.png
+coverAlt: The view switcher of Files
+---
+
+Files keeps some things on disk so it can be fast: thumbnails of HEIC and PDF files, music you streamed, album covers, files you opened from an SSH server. **Settings → Storage** shows all of it in one ring chart, kind by kind — and each extension separately, so you can see whose cache grows.
+
+## Clear and limit
+
+- **Clear** next to any kind empties it; **Clear all** empties everything.
+- **The limit** — a slider from 256 MB to 20 GB, or none, 1 GB by default — keeps the caches under it. Past it, the files used least recently go first.
+- **Forks** are listed too, but never deleted from here: they hold your own changes.
+
+## For extension authors
+
+`files_sdk::storage` gives every extension its own cache folder. Whatever you put there shows up in Settings → Storage under your extension's name and stays under the user's limit:
+
+```rust
+let file = files_sdk::storage::cache_file("acme.weather", "tiles/1.png")?;
+files_sdk::storage::touch(&file); // used just now: kept longest
+```

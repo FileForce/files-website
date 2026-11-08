@@ -16,6 +16,7 @@ export function Nav() {
         <Link href="/#access" className="hidden hover:text-foreground md:inline">Accessible</Link>
         <Link href="/#extensions" className="hidden hover:text-foreground md:inline">Extensions</Link>
         <Link href="/#marketplace" className="hidden hover:text-foreground md:inline">Marketplace</Link>
+        <Link href="/blog" className="hover:text-foreground">Blog</Link>
         <Link href="/downloads" className="rounded-lg bg-accent/15 px-3 py-1.5 text-accent hover:bg-accent/25">Download</Link>
         <a href={REPOSITORY} className="flex items-center rounded-lg px-2 py-1.5 hover:text-foreground" aria-label="GitHub">
           <GithubMark />

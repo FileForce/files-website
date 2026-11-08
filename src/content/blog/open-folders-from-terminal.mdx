@@ -1,0 +1,24 @@
+---
+title: Open folders in Files from the terminal
+date: 2026-11-05
+tag: tip
+summary: With Files as the folder viewer, open . in a terminal opens the folder in a new tab of Files — and falls back to Finder if Files is gone.
+cover: /blog/list.png
+coverAlt: A folder listed in Files
+---
+
+Turn it on once in **Settings → Default apps → Open folders in Files instead of Finder**. Then, in a new terminal window:
+
+```bash
+open .            # this folder, in a new tab of Files
+open ~/Downloads  # any folder
+open report.pdf   # files still open in their own app
+```
+
+Files puts a tiny `open` script first in your `PATH`. It sends folders to Files and everything else — files, apps, packages, any flag like `open -R` — to the real `/usr/bin/open`.
+
+<Callout>
+If you ever delete Files, the script notices and folders open in Finder again: nothing breaks. **Restore Finder** in the same settings removes the script and its lines from `~/.zshrc`.
+</Callout>
+
+On Linux the same switch makes Files the default file manager for the whole desktop; on Windows, double-clicked folders and "Show in folder" open in Files.
