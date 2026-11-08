@@ -1,0 +1,20 @@
+---
+title: One Files at a time
+date: 2026-11-06
+tag: feature
+summary: Open a folder from anywhere and it lands as a new tab in the Files you already have open — not in a second window.
+cover: /blog/list.png
+coverAlt: A folder listed in Files
+---
+
+Files can be your folder viewer: "Show in Finder" or "Show in folder" from other apps, downloads, `open .` in a terminal, double-clicked folders on Windows. Each of those starts Files again with a folder.
+
+With **Settings → General → Windows → One Files at a time** (on by default), that second start does not open a second window. It hands the folder to the Files that is running, which opens it **in a new tab** and comes to the front, and then quits. Starting Files again without a folder simply brings the window up.
+
+## How it works
+
+The running Files listens on `127.0.0.1` with a random port. The port and a random 128-bit token sit in a file next to your settings that only your user can read, so no other program can send it folders. If Files ever crashes, the next start sees nobody is listening and takes over.
+
+<Callout title="On Windows">
+"Show in folder" from a browser now also selects the file that just arrived, not only its folder.
+</Callout>
