@@ -1,0 +1,27 @@
+---
+title: Windows programs look like themselves
+date: 2026-11-08
+tag: feature
+summary: An .exe shows its own icon, as in Explorer, and the preview reads its product, company, version and signature — on macOS and Linux too.
+cover: /blog/preview.png
+coverAlt: The preview panel of Files
+---
+
+Open your games folder and `Cyberpunk2077.exe` used to look like a text file. Now a Windows program shows **its own icon** — in the grid, in the Pro list and in the preview — the one Explorer shows.
+
+<Figure src="/blog/program-icon.png" alt="PuTTY's icon, read from putty.exe" caption="The icon comes from inside the .exe itself" narrow />
+
+## What the preview says
+
+Select a program and the preview reads what Windows shows under *Properties → Details*:
+
+| Section | What you see |
+| --- | --- |
+| Application | Product, description, company, product and file version, copyright, original name |
+| Program | Built for x64, x86 or ARM64 · windowed app, console app or library · .NET · signed with Authenticode · build date |
+
+Files reads all of this from the file itself, so it works the same on macOS and Linux: copy a game or a tool from a Windows machine and you still see what it is — and whether it is signed — before you run it anywhere.
+
+<Callout>
+Programs are their own kind now, **Application**: `.exe`, `.msi`, `.app` and `.AppImage` sort together when you sort by kind.
+</Callout>
