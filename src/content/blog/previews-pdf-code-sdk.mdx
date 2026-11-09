@@ -1,0 +1,38 @@
+---
+title: "Previews: PDFs that scroll, code you can read, formats you add"
+date: 2026-11-09
+tag: feature
+summary: Quick Look renders every page of a PDF, the preview panel shows code, and extensions can preview their own formats.
+cover: /blog/preview.png
+coverAlt: The preview panel of Files
+---
+
+## PDFs, every page
+
+Press <Kbd>Space</Kbd> on a PDF and Quick Look now shows **the whole document**, page under page, scrolling — not just the first page. Pages are drawn in the background by a renderer written in Rust, so it works the same on macOS, Windows and Linux without any system PDF library; they appear as they are ready, and a page-shaped placeholder keeps the scroll steady meanwhile. Long documents show the first 60 pages; *Open* reads on.
+
+## Code and text in the preview panel
+
+Select a source file, a log or a config and the preview panel shows **its beginning** in a monospace font, scrolling — the same view Quick Look gives, without opening anything.
+
+## Preview is an extension
+
+Quick Look and the look inside files are now the built-in **Preview** extension, with one permission: **Read files**. Turn it off in Settings → Extensions — or take the permission away — and Files stops reading into files: no Quick Look, no details in the preview panel, just names, sizes and dates.
+
+## Your own formats
+
+Extensions can add previews through `files_sdk::preview`:
+
+```rust
+impl PreviewProvider for Notebooks {
+    fn handles(&self, path: &Path) -> bool {
+        path.extension().is_some_and(|extension| extension == "ipynb")
+    }
+
+    fn preview(&self, path: &Path) -> io::Result<PreviewContent> {
+        Ok(PreviewContent::Text { text: render_cells(path)?, monospace: true })
+    }
+}
+```
+
+A preview can be text, a picture, pages or detail rows. It needs **Read files**, runs off the main thread, and shows up in DevTools → Tasks like every other background job.

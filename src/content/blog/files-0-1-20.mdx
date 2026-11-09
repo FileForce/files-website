@@ -1,0 +1,16 @@
+---
+title: Files 0.1.20
+date: 2026-11-09
+tag: release
+version: 0.1.20
+summary: PDFs scroll page by page, code shows in the preview, ⌘K understands paths, corner sizes, and Preview becomes an extension any extension can build on.
+cover: /blog/preview.png
+coverAlt: The preview panel of Files
+---
+
+- **PDFs scroll in Quick Look:** every page (up to 60), rendered in the background on every system, appearing one after another; the preview panel shows the first page.
+- **The preview panel shows the beginning of text and code files**, in a monospace font and scrolling, like Quick Look.
+- **⌘K understands paths:** paste or type `~/Music`, `/etc`, `C:\Users`, a path in quotes or a `file://` address and the first result is that folder (Enter opens it) or file. A half-typed path completes: `~/Do` offers Documents and Downloads.
+- **Settings → Appearance → Corners:** the theme's, none, small, medium or large.
+- **Preview is an extension now** (Settings → Extensions → Preview, permission: Read files): Quick Look and the look inside files in the preview panel; turning it off hides both.
+- **SDK:** `files_sdk::preview` lets an extension preview formats Files does not know — text, a picture, pages or detail rows — in Quick Look.
