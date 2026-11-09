@@ -70,7 +70,8 @@ export function DownloadsList() {
         if (!response.ok) throw new Error(`GitHub answered ${response.status}`);
         return (await response.json()) as Release[];
       })
-      .then(setReleases)
+      // Only versions: other releases (e.g. build-tools for CI) are not Files.
+      .then((all: Release[]) => setReleases(all.filter((release) => /^v\d/.test(release.tag_name))))
       .catch((reason: Error) => setError(reason.message));
   }, []);
 
