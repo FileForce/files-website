@@ -1,0 +1,26 @@
+---
+title: "DevTools: see what Files does in the background"
+date: 2026-11-09
+tag: feature
+summary: Tasks, Indexes and Search in the Console show every background job, every index and where a search's time goes.
+cover: /blog/search.png
+coverAlt: The search box with filters
+---
+
+Files does a lot quietly: thumbnails and Quick Look renders, program icons, photo and video details, folder sizes, the search index, the cache limit. When something feels slow or a preview never shows, you want to see that work. Turn on **Settings → Developer** and press <Kbd>⌘</Kbd> <Kbd>⇧</Kbd> <Kbd>D</Kbd> (<Kbd>Ctrl</Kbd> <Kbd>Shift</Kbd> <Kbd>D</Kbd> on Windows and Linux).
+
+## Tasks
+
+Every background job, newest first: what it is and what it works on, its state — queued, running, done, failed or cancelled — how long it waited, how long it ran, and the error if it failed. **Cancel** drops a queued job, **Retry** runs a failed one again, **Clear finished** tidies the list.
+
+## Indexes
+
+What Files keeps to be fast — file entries, folder listings, the global search index, file details, folder sizes, thumbnails, the music library — with how big each is and a button to rebuild it: read the folder again, rebuild the search index, measure folder sizes again, retry failed thumbnails.
+
+## Search
+
+The last fifty searches, in a folder or with <Kbd>⌘</Kbd> <Kbd>K</Kbd>, each split into a bar: reading the folder or the index, filters and fuzzy matching, sorting — with milliseconds for each. If a search feels slow, you see which part it was.
+
+<Callout>
+DevTools only open in Developer mode: they show paths and internal state, so they are off for everyone else. Vector and graph indexes for semantic search will appear under Indexes once those features arrive ([#1–#4](https://github.com/FileForce/files/issues)).
+</Callout>
