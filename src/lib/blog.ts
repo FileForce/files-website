@@ -42,6 +42,30 @@ export async function loadPost(slug: string): Promise<{ post: Post; Content: Com
   }
 }
 
+/** "0.1.24" → [0, 1, 24], to compare versions as numbers. */
+function versionParts(version?: string): number[] {
+  return (version ?? "").split(".").map((part) => Number.parseInt(part, 10) || 0);
+}
+
+/**
+ * Newest first. Several posts share a day (releases go out often): the
+ * newest release leads, the others follow by version, then the rest.
+ */
+export function newestFirst(a: Post, b: Post): number {
+  if (a.date !== b.date) return b.date.localeCompare(a.date);
+  if (a.version && b.version) {
+    const [left, right] = [versionParts(a.version), versionParts(b.version)];
+    for (let index = 0; index < Math.max(left.length, right.length); index++) {
+      const difference = (right[index] ?? 0) - (left[index] ?? 0);
+      if (difference !== 0) return difference;
+    }
+    return 0;
+  }
+  if (a.version) return -1;
+  if (b.version) return 1;
+  return a.title.localeCompare(b.title);
+}
+
 /** Every post, newest first. */
 export async function allPosts(): Promise<Post[]> {
   // Read at build time: the posts are files in the repository.
@@ -51,7 +75,7 @@ export async function allPosts(): Promise<Post[]> {
   return posts
     .filter((loaded) => loaded !== null)
     .map((loaded) => ({ ...loaded.post }))
-    .sort((a, b) => b.date.localeCompare(a.date));
+    .sort(newestFirst);
 }
 
 export function formatDate(date: string): string {
