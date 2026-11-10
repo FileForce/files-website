@@ -55,6 +55,7 @@ HIGHLIGHTS={
     '0.1.21': ['Favorites take files too', 'Its own icon, one click to open', 'Middle-click: show in folder'],
     '0.1.22': ['Pictures show whole', 'Fit ⇄ Fill, remembered'],
     '0.1.23': ['The files command', 'A clean uninstaller', 'Word, ODT and PowerPoint text', 'Quick Look and ⌘K open at once'],
+    '0.1.24': ['Quick Actions: convert, rotate, your scripts', 'libfiles and agent-written scripts', 'Open With like Finder', 'Tabs come back'],
 }
 
 def release(v, summary):
@@ -309,6 +310,29 @@ def exe():
         s+=t(730,y,k,15 if not v else 19,ACC if not v else MUTED,600 if not v else 400)+(t(1085,y,v,19,TEXT,anchor='end') if v else '')
     return frame(s,'Windows programs')
 covers['windows-programs-icons']=exe()
+
+def quick_actions():
+    s=window(90,80,560,470,'Photos')
+    s+=row(110,140,520,filei,'IMG_2041.HEIC','',True)+row(110,190,520,filei,'IMG_2042.HEIC','',True)
+    s+=r(300,250,300,250,ELEV,12)
+    for i,(label,on) in enumerate([('Copy',False),('Quick Actions  ›',True),('Delete…',False)]):
+        s+=r(312,264+i*48,276,40,ACC if on else 'none',8,'none',0)+t(328,290+i*48,label,18,'#fff' if on else MUTED)
+    s+=r(700,140,410,250,ELEV,14)
+    for i,(label,c) in enumerate([('Convert Image…',TEXT),('Rotate Image…',TEXT),('Resize for web (Python)',GREEN),('Customize…',MUTED)]):
+        s+=t(726,186+i*52,label,20,c)
+    s+=r(700,420,410,110,SURF,12)+t(722,456,'import libfiles',18,ACC,mono=True)+t(722,490,'libfiles.ask(...)',18,MUTED,mono=True)
+    return frame(s,'Quick Actions')
+covers['quick-actions']=quick_actions()
+
+def open_with():
+    s=window(90,90,480,450,'Deck.pptx')
+    s+=row(110,150,440,filei,'Deck.pptx','',True)
+    s+=r(560,150,280,60,ELEV,10)+t(580,188,'Open With  ›',20,TEXT)
+    s+=r(860,150,260,330,ELEV,14)
+    for i,(label,c) in enumerate([('Keynote (default)',TEXT),('LibreOffice',GREEN),('PowerPoint',TEXT),('Kimi',MUTED),('Choose Application…',MUTED)]):
+        s+=t(884,196+i*58,label,19,c,600 if i==1 else 400)
+    return frame(s,'Open With')
+covers['open-with-like-finder']=open_with()
 
 for slug,svg in covers.items():
     open(os.path.join(OUT,slug+'.svg'),'w').write(svg)

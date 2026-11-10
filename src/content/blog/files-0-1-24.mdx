@@ -1,0 +1,16 @@
+---
+title: Files 0.1.24
+date: 2026-11-10
+tag: release
+version: 0.1.24
+summary: Quick Actions — Convert Image with quality and JPEG XL, Rotate, and your own scripts with libfiles — plus Open With like Finder and tabs that come back.
+cover: /blog/covers/files-0-1-24.svg
+coverAlt: "Release notes of Files 0.1.24"
+---
+
+- **Quick Actions** (a built-in extension): the context menu has Quick Actions after Copy, showing only what fits the selection. **Convert Image…** turns PNG, JPEG, WebP, HEIC and JPEG XL into one another with a quality choice — a JPEG becomes JPEG XL losslessly, about a fifth smaller. **Rotate Image…** turns or mirrors, as a copy or in place.
+- **Your own Quick Actions** in Python, Lua, JavaScript, Rust, Go or shell, from Customize… — written by hand, or by an agent you pick, with its model and effort.
+- **libfiles** for scripts: `import libfiles` — ask in a dialog while the script runs, notify, report made files, reveal them.
+- **Open With** lists every app that can open the file, like Finder — LibreOffice for .pptx included — then Choose Application….
+- **Tabs come back** after Files is quit and started again: folders, pinned ones, views, Music, Mail and Settings.
+- SDK: `files_sdk::quick_actions` for extensions' own actions.

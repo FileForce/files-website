@@ -1,0 +1,44 @@
+---
+title: "Quick Actions: convert, rotate, and write your own"
+date: 2026-11-10
+tag: feature
+summary: Like Finder's — but for every system, with scripts in six languages, a libfiles helper that can ask you questions, and an agent to write them.
+cover: /blog/covers/quick-actions.svg
+coverAlt: "Illustration: Quick Actions"
+---
+
+Right-click a file and, right after **Copy**, there is **Quick Actions**. It only shows what fits what you selected: pick three HEIC photos and you get image actions; add a text file and they step aside, because every item must fit.
+
+## Built in
+
+- **Convert Image…** — PNG, JPEG, WebP, HEIC and **JPEG XL** into one another, with **High / Medium / Low** quality. A JPEG turned into JPEG XL at High is transcoded *losslessly*: about a fifth smaller, and the original JPEG can be rebuilt bit for bit.
+- **Rotate Image…** — 90° either way, 180°, or mirrored; as a copy or over the original.
+
+Both ask in a small dialog first — and so can your own.
+
+## Your own, in six languages
+
+**Quick Actions → Customize…** writes actions in **Python, Lua, JavaScript, Rust, Go or shell** — only the ones installed are offered — for the file types you choose, in the order you set. The selected files are the script's arguments.
+
+Scripts get **libfiles**, bundled with every run:
+
+```python
+import libfiles
+
+answers = libfiles.ask("Resize", [libfiles.choice("width", "Width", ["1080", "720"])])
+for path in libfiles.selection():
+    out = resize(path, int(answers["width"]))
+    libfiles.made(out)        # Reveal / Open on the notification
+
+libfiles.notify("Resized", f"{len(libfiles.selection())} pictures")
+```
+
+`ask()` opens a real dialog in Files while the script runs and hands back the answers. JavaScript and Lua have the same `libfiles`; Rust and Go speak its protocol — JSON lines on stdout and stdin.
+
+## Or let an agent write it
+
+With the Agents extension on, **Write with agent** takes a sentence — *"resize pictures to 1080 px wide"* — and the agent you choose, with its **model and effort**, drafts the script in the editor for you to check and save.
+
+<Callout>
+Extensions can add Quick Actions too, through `files_sdk::quick_actions`: the files they fit, the questions to ask, and the run.
+</Callout>
