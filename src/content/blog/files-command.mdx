@@ -1,0 +1,26 @@
+---
+title: "files . — open a folder from the terminal"
+date: 2026-11-10
+tag: tip
+summary: Like code . for VS Code, files . opens the folder you are in — on macOS, Windows and Linux.
+cover: /blog/list.png
+coverAlt: A folder listed in Files
+---
+
+Install it once in **Settings → General → Command line → Install** (on macOS also **Files → Install Command Line Tool** in the menu bar). Then, in a new terminal:
+
+```bash
+files .          # the folder you are in
+files ~/Music    # any folder
+files            # the same as files .
+```
+
+The folder opens as a new tab in the Files you already have open.
+
+| System | Where it goes |
+| --- | --- |
+| macOS | a small script, with a PATH line in `~/.zshrc` |
+| Windows | `files.cmd`, its folder added to your user PATH |
+| Linux | `~/.local/bin/files` |
+
+No administrator rights are needed. **Uninstall** in the same place — or **Uninstall Files…** — removes it and its PATH line again.

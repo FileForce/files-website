@@ -1,0 +1,16 @@
+---
+title: Files 0.1.23
+date: 2026-11-10
+tag: release
+version: 0.1.23
+summary: The files command, a clean uninstaller, Word and PowerPoint text in previews, and Quick Look and ⌘K that open at once.
+cover: /blog/preview.png
+coverAlt: The preview panel of Files
+---
+
+- **Quick Look opens at once:** the window shows right away while the file is read in the background (text, documents, mail, archives, folders), then fills in; files seen before show instantly.
+- **⌘K opens at once too:** its index is walked in the background — and built quietly a few seconds after Files starts.
+- **Word (.docx), OpenDocument (.odt) and PowerPoint (.pptx, slide by slide)** show their text in Quick Look, scrolling through the whole document, and its beginning in the preview panel.
+- **Mail:** the "Saved …" notification of an attachment has Reveal, Open and Open With….
+- **The `files` command** on every system: `files .` opens the current folder in Files, `files ~/Music` any folder. Settings → General → Command line, or Files → Install Command Line Tool on macOS.
+- **Uninstall Files…** removes the files command and the open helper with their PATH lines, gives folders back to Finder or Explorer, clears the caches, optionally the settings, then the app — asking first and listing every step.
