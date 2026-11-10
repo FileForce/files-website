@@ -6,7 +6,9 @@ import { TagBadge } from "@/components/blog";
 import { Footer } from "@/components/download";
 import { Nav } from "@/components/nav";
 import { REPOSITORY } from "@/components/primitives";
+import { JsonLd } from "@/components/json-ld";
 import { allPosts, formatDate, loadPost } from "@/lib/blog";
+import { SITE } from "@/lib/site";
 
 export async function generateStaticParams() {
   return (await allPosts()).map((post) => ({ slug: post.slug }));
@@ -61,6 +63,22 @@ async function PostBody({ params }: Pick<PageProps<"/blog/[slug]">, "params">) {
   const { post, Content } = loaded;
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "BlogPosting",
+          headline: post.title,
+          description: post.summary,
+          datePublished: post.date,
+          dateModified: post.date,
+          image: post.cover ? `${SITE}${post.cover}` : undefined,
+          url: `${SITE}/blog/${post.slug}`,
+          mainEntityOfPage: `${SITE}/blog/${post.slug}`,
+          author: { "@type": "Organization", name: "FileForce", url: SITE },
+          publisher: { "@type": "Organization", name: "FileForce", logo: { "@type": "ImageObject", url: `${SITE}/logo.svg` } },
+          about: { "@type": "SoftwareApplication", name: "file FORCE", url: SITE },
+        }}
+      />
       <header className="mt-6">
         <div className="flex items-center gap-3 text-sm text-faint">
           <TagBadge tag={post.tag} />

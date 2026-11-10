@@ -52,6 +52,8 @@ export function Footer() {
         <div className="flex items-center gap-5">
           <a href={`${REPOSITORY}/blob/main/LICENSE.md`} className="hover:text-muted">License</a>
           <Link href="/blog" className="hover:text-muted">Blog</Link>
+          <Link href="/faq" className="hover:text-muted">FAQ</Link>
+          <a href="/blog/rss.xml" className="hover:text-muted">RSS</a>
           <a href={`${REPOSITORY}/releases`} className="hover:text-muted">Releases</a>
           <a href={REPOSITORY} className="flex items-center gap-1.5 hover:text-muted">
             <GithubMark /> GitHub
