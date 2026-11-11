@@ -1,0 +1,12 @@
+---
+title: Files 0.1.26
+date: 2026-11-11
+tag: release
+version: 0.1.26
+summary: SVG thumbnails are made once, at 320 px, in the background — a folder of heavy SVGs now scrolls like any other.
+cover: /blog/covers/files-0-1-26.svg
+coverAlt: "Release notes of Files 0.1.26"
+---
+
+- **SVG thumbnails, cached:** an SVG card used to be drawn at the file's own size — a 1024 px SVG with filters cost ~290 ms and 4 MB per card. Now each SVG is rasterized once to a 320 px PNG in the background thumbnail worker (transparency kept) and cached. A screen of 30 heavy SVGs fills in ~0.9 s the first time without blocking the window, then redraws in ~18 ms. How we measured: [the SVG stress test](/blog/svg-stress-test).
+- **Windows and Linux builds:** 0.1.25 shipped for macOS only — a macOS-only helper for app icons broke the other builds. Fixed; 0.1.26 is out on all three.

@@ -1,0 +1,43 @@
+---
+title: "Stress test: 5,000 SVGs with filters"
+date: 2026-11-11
+tag: feature
+version: 0.1.26
+summary: Someone asked whether our 5,000-file test made thumbnails. It didn't — so we built a harder one, found a slow path, and fixed it.
+cover: /blog/covers/svg-stress-test.svg
+coverAlt: "A grid of filtered SVG thumbnails with timings: 290 ms before, 18 ms now"
+---
+
+Our earlier 5,000-file test measured the list itself — allocations and scrolling — with tiny stub files. It made no thumbnails. A fair question on X: *what about a folder of SVGs with filters?* So we tried exactly that.
+
+## The folder
+
+5,000 SVGs, 1024 px each. Every one has a Gaussian blur, fractal turbulence, a hue-rotating colour matrix, a drop shadow, a gradient and text — about as expensive as SVG filters get. Rendered with resvg, the same engine Files uses.
+
+## What we found
+
+Before 0.1.26, an SVG card was drawn at the file's own size:
+
+| | per card | a screen of ~30 | memory per card |
+|---|---|---|---|
+| Before | ~290 ms | ~8.9 s of work | 4 MB |
+| 0.1.26, first visit | ~28 ms | ~0.9 s, in the background | 0.4 MB |
+| 0.1.26, every later visit | — | ~18 ms | 12 MB for the screen |
+
+That first row was not OK, so we fixed it before saying anything.
+
+## The fix
+
+SVGs now go through the same pipeline as large photos: a background worker rasterizes each one **once** to a 320 px PNG (transparency kept) and caches it. The window never waits — cards fill in as they're ready, and the work shows up in DevTools like any other thumbnail.
+
+The list is still virtualized: a folder of 5,000 SVGs means ~30 renders for the screen you're looking at, not 5,000.
+
+## Run it yourself
+
+The test lives in the repo:
+
+```sh
+cargo test --release --bin file-force svg_stress -- --ignored --nocapture --test-threads=1
+```
+
+It writes the 5,000 SVGs to a temp folder and prints the numbers above for your machine.

@@ -56,6 +56,7 @@ HIGHLIGHTS={
     '0.1.22': ['Pictures show whole', 'Fit ⇄ Fill, remembered'],
     '0.1.23': ['The files command', 'A clean uninstaller', 'Word, ODT and PowerPoint text', 'Quick Look and ⌘K open at once'],
     '0.1.24': ['Quick Actions: convert, rotate, your scripts', 'libfiles and agent-written scripts', 'Open With like Finder', 'Tabs come back'],
+    '0.1.26': ['SVG thumbnails cached at 320 px', '~290 ms → ~18 ms per screen', 'Windows and Linux builds fixed'],
     '0.1.25': ['macOS apps open with a double-click', 'Show Package Contents', 'Music from the keyboard'],
 }
 
@@ -360,6 +361,17 @@ def music_keys():
         s+=t(cx+10,180+row*80,['previous','next','play','preview'][row],18,MUTED)
     return frame(s,'Music')
 covers['music-keyboard']=music_keys()
+
+def svg_stress():
+    s=window(90,80,620,470,'5,000 SVGs with filters')
+    hues=['#6366f1','#ec4899','#22c55e','#f59e0b','#0ea5e9','#a855f7','#ef4444','#14b8a6','#eab308']
+    for i in range(9):
+        x=120+(i%3)*190; y=140+(i//3)*130
+        s+=r(x,y,170,110,hues[i],12,'none',0)+f'<circle cx="{x+85}" cy="{y+50}" r="30" fill="#fff" opacity="0.35"/>'
+    s+=t(760,190,'before',20,MUTED)+t(760,240,'290 ms',44,TEXT,600)+t(760,275,'per card',18,MUTED)
+    s+=t(760,360,'now',20,MUTED)+t(760,410,'18 ms',44,ACC,600)+t(760,445,'per screen',18,MUTED)
+    return frame(s,'Stress test')
+covers['svg-stress-test']=svg_stress()
 
 for slug,svg in covers.items():
     open(os.path.join(OUT,slug+'.svg'),'w').write(svg)
