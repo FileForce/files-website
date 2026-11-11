@@ -56,6 +56,7 @@ HIGHLIGHTS={
     '0.1.22': ['Pictures show whole', 'Fit ⇄ Fill, remembered'],
     '0.1.23': ['The files command', 'A clean uninstaller', 'Word, ODT and PowerPoint text', 'Quick Look and ⌘K open at once'],
     '0.1.24': ['Quick Actions: convert, rotate, your scripts', 'libfiles and agent-written scripts', 'Open With like Finder', 'Tabs come back'],
+    '0.1.25': ['macOS apps open with a double-click', 'Show Package Contents', 'Music from the keyboard'],
 }
 
 def release(v, summary):
@@ -333,6 +334,32 @@ def open_with():
         s+=t(884,196+i*58,label,19,c,600 if i==1 else 400)
     return frame(s,'Open With')
 covers['open-with-like-finder']=open_with()
+
+def packages():
+    s=window(90,90,560,450,'Applications')
+    for i,(n,c) in enumerate([('Keynote.app','#3b82f6'),('LibreOffice.app','#22c55e'),('Xcode.app','#0ea5e9')]):
+        s+=f'<rect x="{130+i*170}" y="150" width="120" height="120" rx="26" fill="{c}"/>'+t(190+i*170,300,n,17,TEXT,anchor='middle')
+    s+=r(300,330,320,150,ELEV,12)+t(316,366,'Open',18,MUTED)+t(316,406,'Quick Actions  ›',18,TEXT)
+    s+=r(700,330,410,80,ACC,12,'none',0)+t(724,378,'Show Package Contents',22,'#fff',600)
+    s+=t(700,460,'Contents/  MacOS/  Resources/',20,MUTED,mono=True)
+    return frame(s,'macOS')
+covers['show-package-contents']=packages()
+
+def music_keys():
+    s=window(90,80,640,470,'Music')
+    for i in range(6):
+        sel=i==2
+        s+=r(110,140+i*62,600,54,'#262a52' if sel else 'none',8,'none',0)
+        if sel: s+=f'<rect x="110" y="{140+i*62}" width="4" height="54" fill="{ACC}"/>'
+        s+=r(128,148+i*62,38,38,ELEV,6,'none',0)+t(184,172+i*62,['Intro','Night Drive','Blue Hour','Afterglow','Tides','Home'][i],19,TEXT)
+    x=790
+    for row,keys in enumerate([['↑'],['↓'],['Enter'],['Space']]):
+        cx=x
+        for k in keys:
+            svg,w=kbd(cx,150+row*80,k); s+=svg; cx+=w+10
+        s+=t(cx+10,180+row*80,['previous','next','play','preview'][row],18,MUTED)
+    return frame(s,'Music')
+covers['music-keyboard']=music_keys()
 
 for slug,svg in covers.items():
     open(os.path.join(OUT,slug+'.svg'),'w').write(svg)
