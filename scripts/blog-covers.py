@@ -379,7 +379,7 @@ def memory_leak():
     rows=[('File entries','2,431 alive'),('Folder listings','12 folders'),('Thumbnails','0 waiting')]
     for i,(a,b) in enumerate(rows):
         s+=t(120,170+i*56,a,20,TEXT)+t(700,170+i*56,b,20,MUTED,anchor='end')
-    s+='<polyline points="130,500 230,470 330,430 430,380 530,330 630,280" fill="none" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>'
+    s+='<polyline points="130,500 230,470 330,445 430,410 530,375 630,340" fill="none" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>'
     s+='<polyline points="130,500 230,488 330,492 430,486 530,490 630,488" fill="none" stroke="'+ACC+'" stroke-width="5" stroke-linecap="round"/>'
     s+=t(780,200,'before',20,MUTED)+t(780,250,'18 GB',48,'#ef4444',600)+t(780,285,'after days',18,MUTED)
     s+=t(780,370,'now',20,MUTED)+t(780,420,'flat',48,ACC,600)+t(780,455,'freed as you go',18,MUTED)

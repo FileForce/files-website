@@ -1,0 +1,1 @@
+file FORCE — the free, fast file manager for macOS, Windows and Linux

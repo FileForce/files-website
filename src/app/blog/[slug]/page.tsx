@@ -23,7 +23,8 @@ export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): P
   return {
     title: `${post.title} — Files blog`,
     description: post.summary,
-    openGraph: { title: post.title, description: post.summary, type: "article", publishedTime: post.date, images: post.cover ? [post.cover] : undefined },
+    openGraph: { title: post.title, description: post.summary, type: "article", publishedTime: post.date, images: shareImage(post) },
+    twitter: { card: "summary_large_image", title: post.title, description: post.summary, images: shareImage(post) },
   };
 }
 
@@ -71,7 +72,7 @@ async function PostBody({ params }: Pick<PageProps<"/blog/[slug]">, "params">) {
           description: post.summary,
           datePublished: post.date,
           dateModified: post.date,
-          image: post.cover ? `${SITE}${post.cover}` : undefined,
+          image: post.cover ? `${SITE}${pngCover(post.cover)}` : undefined,
           url: `${SITE}/blog/${post.slug}`,
           mainEntityOfPage: `${SITE}/blog/${post.slug}`,
           author: { "@type": "Organization", name: "FileForce", url: SITE },
@@ -104,4 +105,13 @@ async function PostBody({ params }: Pick<PageProps<"/blog/[slug]">, "params">) {
       )}
     </>
   );
+}
+
+/** Social networks show no SVG: the cover's PNG twin (made by scripts/social-icons.py). */
+function pngCover(cover: string) {
+  return cover.replace(/\.svg$/, ".png");
+}
+
+function shareImage(post: { cover?: string; coverAlt?: string; title: string }) {
+  return post.cover ? [{ url: pngCover(post.cover), width: 1200, height: 630, alt: post.coverAlt ?? post.title }] : undefined;
 }

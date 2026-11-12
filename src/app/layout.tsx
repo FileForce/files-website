@@ -20,6 +20,12 @@ export const metadata: Metadata = {
     type: "website",
     siteName: "file FORCE",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "file FORCE — the free file manager for macOS, Windows and Linux",
+    description: "Fast, free, extensible. Git, SSH, Quick Look and Quick Actions built in.",
+  },
+  manifest: "/manifest.webmanifest",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
