@@ -1,0 +1,41 @@
+---
+title: "Where 18 GB went: two memory leaks, found and fixed"
+date: 2026-11-12
+tag: feature
+version: 0.1.28
+summary: After a few days open, a development build of Files used 18 GB. Two leaks — one in images, one in file entries — and how we closed both.
+cover: /blog/covers/memory-leak-fixed.svg
+coverAlt: "DevTools showing live file entries, with memory climbing before and flat after"
+---
+
+A development build of Files had been open for a few days, and Activity Monitor said **18 GB**. A file manager should never need that. By the time we looked, the process had been restarted — so there was no heap to inspect. We went through the code for anything that grows and never shrinks, and found two things.
+
+## 1. Pictures that were never let go
+
+Files draws images with GPUI, and GPUI has a global image cache that keeps every decoded picture **until someone explicitly removes it**. The file grid already had its own cache, freed when you open another folder. But Quick Look, the Inspector and Music covers used the global one.
+
+A decoded 12-megapixel photo is about 48 MB. Look through 400 photos in Quick Look over a few days, and that's 18 GB that never comes back.
+
+**The fix:** each of those places now has its own cache, tied to what it shows. Move to the next file, and the previous picture is freed.
+
+## 2. A new entry for every change, kept forever
+
+Every file Files shows is a small record: name, size, date, kind. Those records used to be allocated once and never freed (in Rust terms, `&'static`). That was fine for a file that never changes. But when a file **changes**, it gets a new record, and the old one stayed behind.
+
+In a project folder that's constant: build output, logs, a growing download. We measured it — **10,000 changes to one file left 60,000 allocations behind**, about 700 bytes each time.
+
+**The fix:** records are now shared (`Arc`) and own their text. The folder listing, the selection, Quick Look and the Inspector each hold a reference. When the last one lets go, the record and its strings are freed. The same test now leaves **zero** allocations behind.
+
+It touched 22 files: every place that held a file record, the selection, drag and drop, and the context menus. All 215 tests pass.
+
+## See it yourself
+
+**DevTools → Indexes → File entries** now shows how many records are *alive*. Leave Files open, build a project in a folder you're viewing, and the number stays put instead of climbing.
+
+The leak test is in the repo:
+
+```sh
+cargo test --bin file-force leak_per_changed_file -- --ignored --nocapture
+```
+
+What's still kept until quit, on purpose: one short label per distinct folder you visit, and the names of Finder tags. Both are bounded by what's on your disk, not by how long Files runs.

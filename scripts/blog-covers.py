@@ -56,6 +56,7 @@ HIGHLIGHTS={
     '0.1.22': ['Pictures show whole', 'Fit ⇄ Fill, remembered'],
     '0.1.23': ['The files command', 'A clean uninstaller', 'Word, ODT and PowerPoint text', 'Quick Look and ⌘K open at once'],
     '0.1.24': ['Quick Actions: convert, rotate, your scripts', 'libfiles and agent-written scripts', 'Open With like Finder', 'Tabs come back'],
+    '0.1.28': ['Two memory leaks fixed', 'File entries freed as you go', 'Pause in the Music preview'],
     '0.1.26': ['SVG thumbnails cached at 320 px', '~290 ms → ~18 ms per screen', 'Windows and Linux builds fixed'],
     '0.1.25': ['macOS apps open with a double-click', 'Show Package Contents', 'Music from the keyboard'],
 }
@@ -372,6 +373,18 @@ def svg_stress():
     s+=t(760,360,'now',20,MUTED)+t(760,410,'18 ms',44,ACC,600)+t(760,445,'per screen',18,MUTED)
     return frame(s,'Stress test')
 covers['svg-stress-test']=svg_stress()
+
+def memory_leak():
+    s=window(90,80,640,470,'DevTools — Indexes')
+    rows=[('File entries','2,431 alive'),('Folder listings','12 folders'),('Thumbnails','0 waiting')]
+    for i,(a,b) in enumerate(rows):
+        s+=t(120,170+i*56,a,20,TEXT)+t(700,170+i*56,b,20,MUTED,anchor='end')
+    s+='<polyline points="130,500 230,470 330,430 430,380 530,330 630,280" fill="none" stroke="#ef4444" stroke-width="5" stroke-linecap="round"/>'
+    s+='<polyline points="130,500 230,488 330,492 430,486 530,490 630,488" fill="none" stroke="'+ACC+'" stroke-width="5" stroke-linecap="round"/>'
+    s+=t(780,200,'before',20,MUTED)+t(780,250,'18 GB',48,'#ef4444',600)+t(780,285,'after days',18,MUTED)
+    s+=t(780,370,'now',20,MUTED)+t(780,420,'flat',48,ACC,600)+t(780,455,'freed as you go',18,MUTED)
+    return frame(s,'Memory')
+covers['memory-leak-fixed']=memory_leak()
 
 for slug,svg in covers.items():
     open(os.path.join(OUT,slug+'.svg'),'w').write(svg)

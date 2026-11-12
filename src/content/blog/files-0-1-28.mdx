@@ -1,0 +1,13 @@
+---
+title: Files 0.1.28
+date: 2026-11-12
+tag: release
+version: 0.1.28
+summary: Two memory leaks fixed — Files left open for days stays small — and Music's track preview gets Pause and Space to close.
+cover: /blog/covers/files-0-1-28.svg
+coverAlt: "Release notes of Files 0.1.28"
+---
+
+- **Pictures are freed:** Quick Look, the Inspector and Music covers kept every image they ever decoded. After days of use that reached gigabytes. Each now has its own cache, freed when you move on.
+- **File entries are freed:** every change to a file (build output, logs, downloads) used to leave its old record in memory for good. Now a replaced record is freed once nothing shows it — 10,000 changes leave nothing behind. **DevTools → Indexes** shows how many are alive. The whole story: [Where 18 GB went](/blog/memory-leak-fixed).
+- **Music → Space on a track:** the track already playing shows **Pause** instead of restarting, and Space again closes the preview, like Quick Look.
