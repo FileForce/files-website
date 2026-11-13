@@ -1,0 +1,54 @@
+---
+title: "Making MP3 sound better, inside a file manager"
+date: 2026-11-13
+tag: feature
+version: 0.1.29
+summary: Converting MP3 to FLAC on its own changes nothing. Here is what Files does instead — a harmonic exciter, a loudness lift and a 5.1 upmix, all in Rust, and fast enough to run on a stream as it arrives.
+cover: /blog/covers/mp3-to-flac-enhance.svg
+coverAlt: "Spectrum of an MP3 cut at 16 kHz next to the enhanced FLAC reaching higher"
+---
+
+The request was simple: "an automatic enhancer, MP3 → FLAC". The honest answer starts with what that *can't* do.
+
+## FLAC alone changes nothing
+
+MP3 is lossy: to save space it throws away what it thinks you won't hear — most of all, everything above about 16 kHz. FLAC is lossless: it keeps exactly what it's given. So an MP3 copied into FLAC is the same sound in a file five times bigger. What's gone is gone.
+
+What *can* help is processing the sound, and FLAC is then the right place to keep the result: nothing more is lost on the way.
+
+## What Enhance does
+
+1. **Harmonic exciter.** The band above 3 kHz is gently saturated, which creates overtones. Only the new ones above 7 kHz are mixed back in. That rebuilds a plausible top end where the MP3 left a cliff. It's not the original back — it's new highs made from what's left, and they make cymbals and breath sound less dull.
+2. **Loudness lift.** Quiet tracks are measured with EBU R128 and lifted towards −14 LUFS (what streaming services use), never by more than 12 dB and never past −1 dBTP. Loud tracks are left alone.
+3. **24-bit FLAC**, with title, artist, album and cover copied over.
+
+Low, Medium and High set how much of the exciter goes in.
+
+## Upmix to 5.1
+
+Stereo has two channels; 5.1 has six. Files splits the mix the way passive surround decoders do: what both channels share goes to the **centre** (that's usually the voice), the shared lows to the **subwoofer**, and the difference between left and right — reverb, room, ambience — to the **rear**, delayed by 12 ms and softened. You hear it on a receiver or headphones with spatial audio; plain stereo speakers fold it back to two.
+
+## No ffmpeg
+
+The obvious way to build this is to call ffmpeg. But not every computer has it, and shipping it means another 40 MB per platform and licence conditions. So it's all Rust, inside the app: **Symphonia** decodes, **ebur128** measures loudness, **flacenc** writes FLAC, and the filters are written by hand. A 4-minute track takes about a second.
+
+Two small things had to be fixed on the way. flacenc wrote the size of the short last block as the minimum block size, which the FLAC spec leaves out — our own player refused those files. And it marked its header as the last one, so tags added afterwards were invisible to every player. Both are a few bytes in the header, both covered by tests.
+
+## Enhancing a stream
+
+Yandex Music streams MP3, so the same enhancement became a setting: **Settings → Extensions → Music → Enhance streaming**. The first version downloaded the whole track, enhanced it, and only then played it. Correct, but you waited for every song.
+
+Now it works on the stream itself:
+
+1. The MP3 is downloaded in pieces. Each piece goes into the cache and into a buffer in memory.
+2. The decoder reads that buffer as it grows, waiting when it catches up.
+3. The exciter runs piece by piece — its filters keep their state between pieces.
+4. The result goes to the player as WAV, over a local address on your own computer (`127.0.0.1`; nothing is opened to the network).
+
+The first sound arrives in about **0.1 s**, with 3% of the track downloaded. When the whole track is in, Files makes the full enhancement — loudness lift included — and caches it as FLAC, so the next play starts from that.
+
+Two trade-offs, stated in the setting: a track playing for the first time can't be scrubbed until it has fully arrived, and its loudness isn't lifted yet (that needs the whole track — a soft limiter catches the peaks instead). The next track in the queue is prepared whole ahead of time, so in practice that's the first track only.
+
+## Try it
+
+Right-click any MP3 → **Quick Actions → Enhance to FLAC…**, and compare `song.enhanced.flac` with the original on good headphones. Start with Medium.

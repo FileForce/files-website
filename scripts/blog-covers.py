@@ -57,6 +57,7 @@ HIGHLIGHTS={
     '0.1.23': ['The files command', 'A clean uninstaller', 'Word, ODT and PowerPoint text', 'Quick Look and ⌘K open at once'],
     '0.1.24': ['Quick Actions: convert, rotate, your scripts', 'libfiles and agent-written scripts', 'Open With like Finder', 'Tabs come back'],
     '0.1.28': ['Two memory leaks fixed', 'File entries freed as you go', 'Pause in the Music preview'],
+    '0.1.29': ['MP3 → FLAC with a harmonic exciter', 'Upmix stereo to 5.1', 'Yandex Music enhanced as it streams', 'New files appear within a second'],
     '0.1.26': ['SVG thumbnails cached at 320 px', '~290 ms → ~18 ms per screen', 'Windows and Linux builds fixed'],
     '0.1.25': ['macOS apps open with a double-click', 'Show Package Contents', 'Music from the keyboard'],
 }
@@ -385,6 +386,26 @@ def memory_leak():
     s+=t(780,370,'now',20,MUTED)+t(780,420,'flat',48,ACC,600)+t(780,455,'freed as you go',18,MUTED)
     return frame(s,'Memory')
 covers['memory-leak-fixed']=memory_leak()
+
+def mp3_to_flac():
+    s=''
+    # spectrum: MP3 stops at 16 kHz, enhanced reaches higher
+    import math
+    def bars(x0,y0,cut,color,label):
+        out=r(x0,y0,480,300,SURF,18)+t(x0+24,y0+40,label,20,TEXT,600)
+        for i in range(40):
+            f=i/39*22
+            hgt=180*math.exp(-f/9)*(0.75+0.25*math.sin(i*1.7))
+            if f>cut: hgt*=0.04 if color==RED else 0.35
+            out+=f'<rect x="{x0+24+i*11}" y="{y0+270-hgt}" width="8" height="{hgt}" rx="2" fill="{color}" opacity="0.85"/>'
+        out+=t(x0+24,y0+292,'0',14,FAINT,mono=True)+t(x0+456,y0+292,'22 kHz',14,FAINT,mono=True,anchor='end')
+        return out
+    s+=bars(80,120,16,RED,'MP3 · cut at 16 kHz')
+    s+=bars(640,120,16,ACC,'Enhanced FLAC')
+    s+=t(600,290,'→',40,MUTED,anchor='middle')
+    s+=t(80,90,'Enhance to FLAC · Upmix to 5.1 · enhanced streaming',22,MUTED)
+    return frame(s,'Music',PINK)
+covers['mp3-to-flac-enhance']=mp3_to_flac()
 
 for slug,svg in covers.items():
     open(os.path.join(OUT,slug+'.svg'),'w').write(svg)
