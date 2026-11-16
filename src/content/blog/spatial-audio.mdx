@@ -1,0 +1,44 @@
+---
+title: "Spatial audio, inside a file manager"
+date: 2026-11-13
+tag: feature
+version: 0.1.30
+summary: How Files puts a 5.1 room around your head on any headphones, why it needed its own audio player — VLC reads 100 seconds ahead — and how AirPods keep the sound in place when you turn.
+cover: /blog/covers/spatial-audio.svg
+coverAlt: "A head with five virtual speakers around it, VLC's 100 s read-ahead against the own player's milliseconds"
+---
+
+Spatial audio usually means Apple Music and AirPods. We wanted it for every track in Files, on any headphones, on macOS, Windows and Linux alike.
+
+## A room you can't see
+
+Headphones put the left channel in the left ear and the right channel in the right. That's why music on headphones sounds *inside* your head. Speakers in a room don't work like that: each ear hears every speaker, a little later and a little darker from the far side.
+
+So Files builds that room:
+
+1. **Stereo becomes 5.1.** What both channels share goes to the centre (usually the voice), the shared lows to the subwoofer, and the difference — reverb, ambience — to two rear speakers.
+2. **Each speaker gets a place:** fronts at ±30°, centre straight ahead, rears at ±110°.
+3. **Each speaker is heard by each ear.** A model of the head (Brown & Duda) works out two things for any angle: how much later the sound reaches the far ear (up to about 0.7 ms), and how much the head shadows it (the far ear loses highs).
+4. **A faint room:** a few early reflections, each ear hearing the other side a little late. That's the cue that moves the sound out of your head.
+
+It's all in Rust, inside Files, and it costs a fraction of one processor core.
+
+## Why VLC couldn't do it
+
+Files plays music through VLC. The plan was to process the sound and hand it to VLC as a stream. Then we measured how far ahead VLC reads: **about 100 seconds**.
+
+For an equalizer that doesn't matter. For head tracking it's fatal: you turn your head, and the sound follows a minute and a half later.
+
+So spatial audio has its own player. It decodes the track, runs it through the room and writes straight to the sound card, a few milliseconds ahead of what you hear. Pause, seek, volume and the equalizer work as before. When spatial audio is off, VLC plays as it always did.
+
+## Head tracking
+
+On a Mac with AirPods or Beats, **Follow my head** reads the headphones' motion sensors 100 times a second. Turn left, and the scene turns right by the same angle: the singer stays where the singer was. Each new track starts facing you.
+
+## Real speakers too
+
+The same split works without headphones. Pick 2.1, 3.1, 5.1 or 7.1 under **Speakers**, and Music spreads stereo over the speakers you have. A test tone for each speaker plays through that same output, in that same channel order. If the centre test comes out of the left speaker, you know before a song does it.
+
+## Try it
+
+Settings → Extensions → Music → Spatial audio → **With headphones**. Put headphones on and play something with a wide mix. If Spatialize Stereo is on in Control Center, turn it off — otherwise the sound is spatialized twice.

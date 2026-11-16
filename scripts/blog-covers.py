@@ -58,6 +58,9 @@ HIGHLIGHTS={
     '0.1.24': ['Quick Actions: convert, rotate, your scripts', 'libfiles and agent-written scripts', 'Open With like Finder', 'Tabs come back'],
     '0.1.28': ['Two memory leaks fixed', 'File entries freed as you go', 'Pause in the Music preview'],
     '0.1.29': ['MP3 → FLAC with a harmonic exciter', 'Upmix stereo to 5.1', 'Yandex Music enhanced as it streams', 'New files appear within a second'],
+    '0.1.30': ['Spatial audio for headphones', 'Head tracking with AirPods', 'Surround speakers with a test', 'Sign in to SSH with a key'],
+    '0.1.31': ['Several SSH servers at once', 'Copy files between servers', 'Archives read by content', 'Windows: drag files into other apps'],
+    '0.1.32': ['Lock Files with Touch ID or Hello', 'Frame rate in the video preview', 'Sidebar works from Music and Mail'],
     '0.1.26': ['SVG thumbnails cached at 320 px', '~290 ms → ~18 ms per screen', 'Windows and Linux builds fixed'],
     '0.1.25': ['macOS apps open with a double-click', 'Show Package Contents', 'Music from the keyboard'],
 }
@@ -406,6 +409,25 @@ def mp3_to_flac():
     s+=t(80,90,'Enhance to FLAC · Upmix to 5.1 · enhanced streaming',22,MUTED)
     return frame(s,'Music',PINK)
 covers['mp3-to-flac-enhance']=mp3_to_flac()
+
+def spatial_audio():
+    import math
+    s=''
+    cx,cy=400,330
+    s+=f'<circle cx="{cx}" cy="{cy}" r="210" fill="none" stroke="{BORDER}" stroke-width="2" stroke-dasharray="6 8"/>'
+    # head, ears
+    s+=f'<circle cx="{cx}" cy="{cy}" r="46" fill="{ELEV}" stroke="{ACC}" stroke-width="3"/>'
+    s+=f'<path d="M{cx-12} {cy-46} L{cx} {cy-64} L{cx+12} {cy-46}" fill="{ACC}"/>'
+    for side in (-1,1):
+        s+=f'<rect x="{cx+side*46-6}" y="{cy-14}" width="12" height="28" rx="6" fill="{ACC}"/>'
+    for label,deg in [('C',0),('L',30),('R',-30),('RL',110),('RR',-110)]:
+        a=math.radians(deg); x=cx-210*math.sin(a); y=cy-210*math.cos(a)
+        s+=f'<circle cx="{x:.0f}" cy="{y:.0f}" r="26" fill="{SURF}" stroke="{PINK}" stroke-width="2.5"/>'+t(x,y+7,label,18,TEXT,600,anchor='middle')
+    s+=t(720,230,'Spatial audio',44,TEXT,600)+t(720,280,'a 5.1 room around your head',22,MUTED)
+    s+=t(720,350,'VLC read ahead',20,MUTED)+t(720,395,'~100 s',40,RED,600)
+    s+=t(720,445,'own player',20,MUTED)+t(720,490,'tens of ms',40,ACC,600)
+    return frame(s,'Music',PINK)
+covers['spatial-audio']=spatial_audio()
 
 for slug,svg in covers.items():
     open(os.path.join(OUT,slug+'.svg'),'w').write(svg)
