@@ -1,0 +1,45 @@
+---
+title: "Lock Files, unlock it with Touch ID"
+date: 2026-11-17
+tag: feature
+version: 0.1.32
+summary: Files can hide every window behind a lock screen — at launch, after a while without use, or when the computer locks or sleeps — and opens again only with the system's own check. No password of its own, and no way to lock yourself out.
+cover: /blog/covers/app-lock.svg
+coverAlt: "A Files window showing only a padlock and Unlock, next to the system checks that open it"
+---
+
+A file manager shows a lot at a glance: your Downloads, the names of your projects, the photos in Quick Look, the server you're connected to. If you step away from an unlocked computer, or hand it to someone for a minute, all of that is one look away.
+
+**Settings → General → Lock** fixes that. It's off unless you turn it on.
+
+## When it locks
+
+You choose any of three moments:
+
+1. **When Files starts.**
+2. **After Files isn't used for a while:** 1, 5, 15, 30 or 60 minutes. It counts how long Files itself hasn't been used — clicks, keys, scrolling in its windows. Working in another app counts as not using Files.
+3. **When the computer locks its screen or sleeps.** Files checks every two seconds whether the system has locked the screen, and notices a sleep by the clock jumping ahead.
+
+And **Lock now** locks right away.
+
+## What a locked Files looks like
+
+Every Files window shows only a padlock, "Files is locked" and **Unlock**. It isn't a curtain over the files: the window doesn't draw them at all, so nothing shows through, and the keyboard shortcuts don't work either.
+
+## Who opens it
+
+The system, not Files:
+
+| | Unlocks with |
+|---|---|
+| macOS | Touch ID, or your Mac's password |
+| Windows | Windows Hello — face, fingerprint or PIN |
+| Linux | your account's password, in polkit's own dialog |
+
+So Files doesn't have a password of its own. There's nothing to forget and nothing stored. And when a computer has no such check (no Touch ID and no password, no Windows Hello, no polkit), you can't turn the lock on: Files would never open again.
+
+When the lock comes on, the check appears by itself, once. If you press Cancel, Files takes that as "not now": it waits for **Unlock** or Enter instead of asking again and again.
+
+## Try it
+
+Settings → General → Lock → turn it on → Save → **Lock now**.

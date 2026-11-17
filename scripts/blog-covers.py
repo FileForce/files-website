@@ -429,6 +429,23 @@ def spatial_audio():
     return frame(s,'Music',PINK)
 covers['spatial-audio']=spatial_audio()
 
+def app_lock():
+    s=window(90,90,560,440,'Files')
+    s+=f'<rect x="92" y="138" width="556" height="390" fill="{SURF}" opacity="0.6"/>'
+    # padlock
+    s+=f'<path d="M330 300 v-40 a40 40 0 0 1 80 0 v40" fill="none" stroke="{ACC}" stroke-width="10" stroke-linecap="round"/>'
+    s+=f'<rect x="310" y="298" width="120" height="96" rx="16" fill="{ACC}"/>'
+    s+=f'<circle cx="370" cy="340" r="10" fill="{BG}"/><rect x="366" y="344" width="8" height="24" rx="4" fill="{BG}"/>'
+    s+=t(370,440,'Files is locked',24,TEXT,600,anchor='middle')
+    s+=r(305,460,130,40,ACC,10,'none',0)+t(370,486,'Unlock',18,BG,600,anchor='middle')
+    rows=[('Touch ID · Mac password','macOS'),('Windows Hello','Windows'),('Your password · polkit','Linux')]
+    s+=t(720,200,'Unlocked by the system',30,TEXT,600)
+    for i,(a,b) in enumerate(rows):
+        s+=t(720,262+i*58,a,22,TEXT)+t(720,286+i*58,b,16,MUTED)
+    s+=t(720,470,'no password of its own',20,ACC,500)
+    return frame(s,'Privacy',ACC)
+covers['app-lock']=app_lock()
+
 for slug,svg in covers.items():
     open(os.path.join(OUT,slug+'.svg'),'w').write(svg)
 # frontmatter
