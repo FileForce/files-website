@@ -1,0 +1,38 @@
+---
+title: Files 0.1.33
+date: 2026-11-21
+tag: release
+version: 0.1.33
+summary: Smart Folders become an extension, Quick Actions convert and compress media, DevTools gets an FPS counter and its own window.
+cover: /blog/covers/files-0-1-33.svg
+coverAlt: "Files 0.1.33: Smart Folders, media Quick Actions and new developer tools"
+---
+
+Files 0.1.33 gathers your media and duplicates in Smart Folders, adds useful video and PDF actions, and gives developers more ways to inspect the app.
+
+## Smart Folders, now an extension
+
+The Smart Folders built-in extension gathers **Videos, Photos, Executables, Applications and Duplicates** in the background. Open one from the sidebar like any other folder. Duplicates are compared by content, not just by their names. As with other built-ins, Smart Folders can be turned off in **Settings → Extensions**.
+
+## Convert and compress from the context menu
+
+Quick Actions now include:
+
+- **Convert Video…** to MP4, MOV or WebM.
+- **Compress Video…** with High, Medium or Low quality.
+- **Convert Photos to PDF** — one PDF with a page for every selected photo.
+- **Compress PDF…** with a quality choice. This makes a smaller PDF, not a ZIP archive.
+
+Video conversion and compression use **FFmpeg**. PDF compression uses **Ghostscript**. Photos to PDF needs no external tools.
+
+## Frame rate and developer tools
+
+Choose a frame-rate limit of **24, 30, 45, 60, 90 or 120 FPS** in **Settings → General**. High frame rates follow the display's refresh rate, so 90 or 120 FPS also needs a compatible monitor.
+
+**Settings → Developer → Show FPS counter** adds the actual frame rate to DevTools. DevTools can now be **detached into a separate window**, useful when you want to keep an eye on performance without covering the file list. Main, DevTools and Music windows also keep their frame rate while inactive.
+
+Music has a new **Show audio channels in DevTools** option. Its Audio view shows the live RMS and dB level of each output channel.
+
+This release also fixes the Settings gear so it focuses an existing Settings tab, keeps the Smart Duplicates loading animation moving during indexing, and prevents video previews from inheriting VLC's spatial-audio filter and its missing-SOFA-HRTF warning.
+
+[Download Files 0.1.33](/downloads) or see the [full release notes](https://github.com/FileForce/files/releases/tag/v0.1.33).
