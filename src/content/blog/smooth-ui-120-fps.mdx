@@ -1,0 +1,37 @@
+---
+title: Smooth UI at up to 120 FPS
+date: 2026-11-21
+tag: feature
+version: 0.1.33
+summary: Choose Files' frame-rate limit, see the actual FPS in DevTools, and keep animations in step with a high-refresh-rate display.
+cover: /blog/covers/smooth-ui-120-fps.svg
+coverAlt: "Files running smoothly at up to 120 FPS"
+---
+
+Scrolling and animation feel different at 30 and 120 frames per second. Files 0.1.33 lets you choose the frame-rate limit and see what the app actually draws, instead of guessing from how the interface feels.
+
+## Choose your frame rate
+
+Open **Settings → General → Frame rate** and pick **24, 30, 45, 60, 90 or 120 FPS**. The default is 30 FPS. Higher values allow smoother scrolling and animations; lower ones can reduce the work Files does.
+
+The display sets the upper bound. On a 60 Hz monitor, choosing 90 or 120 FPS will not produce more than 60 presented frames per second. To see 120 FPS, you need a display currently running at 120 Hz or more.
+
+## Why 90 FPS could look like 30
+
+A timer that wakes up every 11 ms does not line up with a 60 Hz display's frames, which arrive every 16.67 ms. It can miss the next presentation opportunity and wait for the following one. The result is only about 30 FPS, despite the higher setting.
+
+For 60, 90 and 120 FPS, Files now asks the window system for the next animation frame. Drawing follows the display instead of fighting it with a separate timer. The lower 24, 30 and 45 FPS limits still use timed updates.
+
+Windows no longer drop to 30 FPS merely because they are inactive. This matters when DevTools or Music is open beside the main Files window.
+
+## See the real numbers
+
+Turn on **Settings → Developer → Show FPS counter**. DevTools then reports the frames actually presented, including frame-time statistics — not the value selected in Settings.
+
+You can **detach DevTools into its own window** and keep it beside Files while scrolling, opening folders or playing animations. That makes it easier to distinguish a frame-rate limit from work that makes individual frames expensive.
+
+<Callout>
+The FPS counter is a diagnostic tool. Turn off **Show FPS counter** when you no longer need it: continuous frame measurement also keeps continuous redraws active.
+</Callout>
+
+The frame-rate control, FPS counter and detachable DevTools are available in [Files 0.1.33](/blog/files-0-1-33).
