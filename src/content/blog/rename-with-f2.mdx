@@ -1,0 +1,29 @@
+---
+title: Rename files with F2
+date: 2026-11-22
+tag: feature
+version: 0.1.35
+summary: Rename files and folders with F2 or the context menu, and open Properties with F1 — familiar Windows shortcuts on every platform.
+cover: /blog/covers/rename-with-f2.svg
+coverAlt: "Renaming a file with F2 in Files"
+---
+
+Small keyboard habits should work everywhere. Files 0.1.35 adds two familiar Windows shortcuts on macOS, Windows and Linux: <Kbd>F2</Kbd> renames the selected item, and <Kbd>F1</Kbd> opens its Properties.
+
+## Rename without reaching for the mouse
+
+Select a file or folder and press <Kbd>F2</Kbd>. The Rename dialog opens with the current name ready to edit. For a file, only its stem is selected, so typing a new name keeps the extension. For a folder, the whole name is selected. Press <Kbd>Enter</Kbd> to confirm or <Kbd>Esc</Kbd> to cancel.
+
+You can also right-click an item and choose **Rename…**. The menu shows the shortcut, and both shortcuts can be changed in **Settings → Hotkeys**.
+
+## Safe names, no accidental replacement
+
+Rename checks empty and reserved names, path separators, characters that are not portable between operating systems, and names that are too long. If another file or folder already has the new name, Files leaves both items untouched and explains the problem instead of overwriting anything.
+
+After a successful rename, the item stays selected in the file list. Its contents and everything inside a renamed folder stay exactly where they were — only the name changes.
+
+## Properties on F1
+
+Press <Kbd>F1</Kbd> or choose **Properties** in the context menu to open the selected item's details in a separate window, including its kind, size, location, dates and media information where available.
+
+Rename and the F1 Properties shortcut arrive in [Files 0.1.35](https://github.com/FileForce/files/releases/tag/v0.1.35).
