@@ -1,0 +1,23 @@
+---
+title: Files 0.1.37
+date: 2026-11-26
+tag: release
+version: 0.1.37
+summary: Every frame appears in multi-image HEIC and AVIF previews, and interrupted Yandex Music downloads no longer cut tracks short.
+cover: /blog/covers/files-0-1-37.svg
+coverAlt: "Files 0.1.37: complete multi-image previews and uninterrupted music"
+---
+
+Files 0.1.37 fixes two playback and preview interruptions: multi-image photos now show all their frames, and a dropped music download no longer looks like the end of a track.
+
+## Every frame in HEIC and AVIF previews
+
+On macOS, a HEIC or AVIF file can contain several images — for example, the frames of a dynamic wallpaper. Files previously previewed only the first one. The preview now brings **every frame together into one image**, so the whole sequence is visible.
+
+Existing cached previews are regenerated automatically; there is nothing to clear or configure.
+
+## Music continues after a dropped download
+
+An interrupted Yandex Music download could previously be mistaken for a complete track, making playback skip ahead early. Files now **resume the download from the byte where it stopped**, without sending repeated audio to the player. A track that still arrives incomplete is not saved as a complete cache file.
+
+[Download Files 0.1.37](/downloads) or see the [full release notes](https://github.com/FileForce/files/releases/tag/v0.1.37).
